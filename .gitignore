@@ -1,0 +1,33 @@
+# Datasets (large; downloaded via scripts/)
+data/
+*.jsonl
+*.parquet
+
+# Results (raw runs only — committed summaries live in results/RESULTS.md)
+results/raw_calls.jsonl
+results/run_*.json
+results/*.tmp
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# Docker build artifacts
+*.tar
+*.tar.gz
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+
+# Secrets — paranoid
+*.env
+.env
+*.key
+*.pem
+*private*.json
