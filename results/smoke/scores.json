@@ -1,0 +1,72 @@
+{
+  "n_claims": 4,
+  "label_accuracy": 0.5,
+  "label_accuracy_95ci": [
+    0.0,
+    1.0
+  ],
+  "recall_at_5": 0.5,
+  "recall_at_5_95ci": [
+    0.0,
+    1.0
+  ],
+  "recall_at_10": 0.5,
+  "recall_at_10_95ci": [
+    0.0,
+    1.0
+  ],
+  "per_label_f1": {
+    "Supported": {
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6666666666666666,
+      "support": 1
+    },
+    "Refuted": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 1
+    },
+    "Not Enough Evidence": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 1
+    },
+    "Conflicting Evidence/Cherrypicking": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "support": 1
+    }
+  },
+  "confusion_matrix": {
+    "Supported": {
+      "Supported": 1,
+      "Refuted": 0,
+      "Not Enough Evidence": 0,
+      "Conflicting Evidence/Cherrypicking": 0
+    },
+    "Refuted": {
+      "Supported": 0,
+      "Refuted": 1,
+      "Not Enough Evidence": 0,
+      "Conflicting Evidence/Cherrypicking": 0
+    },
+    "Not Enough Evidence": {
+      "Supported": 1,
+      "Refuted": 0,
+      "Not Enough Evidence": 0,
+      "Conflicting Evidence/Cherrypicking": 0
+    },
+    "Conflicting Evidence/Cherrypicking": {
+      "Supported": 0,
+      "Refuted": 0,
+      "Not Enough Evidence": 1,
+      "Conflicting Evidence/Cherrypicking": 0
+    }
+  },
+  "n_failures": 0,
+  "macro_f1": 0.41666666666666663
+}
