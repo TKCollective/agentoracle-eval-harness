@@ -1,8 +1,10 @@
 # AgentOracle Eval Harness
 
-> **Status:** Sprint-in-progress. Started Apr 30, 2026. Target public ship: **May 14, 2026**.
+> **Status (May 14, 2026): Public ship.** Code, dataset loaders, runners, scoring, and Docker spec are open for clone-and-reproduce. Smoke-test results are in `results/smoke/`. **First full FEVER 1.0 dev + AVeriTeC 2024 dev numbers will land in `RESULTS.md` on May 17, 2026** — we are intentionally separating the code-public date from the results-public date so reproducibility instructions ship without rushed numbers behind them.
 >
 > Committed to the [x402 Discord #verifiable-trust thread](https://discord.gg/cdp) on Apr 30, 2026 in response to [architectural review from @beenz](https://github.com/TKCollective/agentoracle-receipt-spec). This repo is the artifact that makes AgentOracle's calibration claims third-party reproducible.
+>
+> See [RESULTS.md](./RESULTS.md) for the run schedule and current status.
 
 ## What this is
 
