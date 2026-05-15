@@ -23,17 +23,36 @@ We chose to separate the two dates on purpose:
 
 ## What's in the repo today
 
-- `src/fever/` — FEVER 1.0 runner, oracle-evidence mode and end-to-end mode
-- `src/averitec/` — AVeriTeC 2024 runner, dataset loader, parametric baseline
-- `src/scoring/` — FEVER score, AVeriTeC Hungarian METEOR / Ev2R, recall@k,
-  contamination delta scorer
-- `src/clients/` — AgentOracle `/evaluate` client + parametric (no-retrieval)
-  baseline client for the contamination test
+- `src/fever/` — FEVER 1.0 runner (`runner.py`) + dataset loader
+- `src/averitec/` — AVeriTeC 2024 runner (`runner.py`), dataset loader, parametric baseline (`runner_parametric.py`)
+- `src/scoring/` — FEVER score, AVeriTeC Hungarian METEOR / Ev2R, recall@k (with both strict-URL and domain-fallback variants), contamination delta scorer
+- `src/clients/` — AgentOracle `/evaluate` client + parametric (no-retrieval) baseline client for the contamination test
 - `docker/Dockerfile` — reproducible build with all dependencies locked
-- `scripts/` — `download_fever.sh`, `download_averitec.sh`,
-  `run_full_eval.sh`
-- `results/smoke/` — 4-claim smoke-test output, demonstrates the pipeline
-  produces valid JSON output. Not a real eval. See `results/smoke/scores.json`.
+- `scripts/` — `download_fever.sh`, `download_averitec.sh`, `run_full_eval.sh`, `check_response_shape.py`
+- `results/smoke/` — 4-claim smoke-test output, demonstrates the pipeline produces valid JSON output. Not a real eval. See `results/smoke/scores.json`.
+
+## Calibration disclosures
+
+Three things reviewers should know about how the numbers in RESULTS.md will be produced:
+
+### 1. Recall@K is reported in BOTH variants
+
+`src/scoring/recall_at_k.py` exposes two variants:
+
+- **`recall_at_k_strict`** — full-URL exact match (path-normalized). Conservative. A wrong article on the right domain does NOT count as a hit. Denominator is `|norm_gold|`.
+- **`recall_at_k_domain_fallback`** — lenient. If no full-URL hits, fall back to domain-only matching. Useful when reviewers want to credit "retrieved the right source, just not the exact gold article URL" — a common case on fact-check sites that publish many articles per topic (snopes, factcheck.org, politifact, etc.).
+
+The key caveat: when domain-fallback fires, the denominator switches from `|norm_gold|` to `|dom_gold|`. If gold cites two URLs on the same domain, fallback can produce R@K = 1.0 where strict produces 0.5. RESULTS.md will publish **BOTH** numbers side-by-side along with the `strict_minus_lenient` delta and the `fallback_fires_pct` (the fraction of claims where domain-fallback actually fired). Readers can compute either and see the gap.
+
+Per @beenz on the v0.2 review thread (2026-05-15) — single-value R@K hides which variant a reviewer is reading.
+
+### 2. /evaluate response-shape is pinned before each run
+
+`scripts/check_response_shape.py` posts a known-good probe to `/evaluate` at `AGENTORACLE_API_URL` before the full eval, verifies every field that `clients/agentoracle_client.py:_parse_response` reads still resolves under at least one of its documented shape paths (top-level OR `result.*` nested), captures the observed `X-AgentOracle-API-Version` header (or `body.metadata.api_version` fallback), and exits non-zero on drift. This prevents a server-side response-shape change between the harness ship date (2026-05-14) and the results-publish date (2026-05-17) from silently moving downstream scores. The observed API version is included in RESULTS.md when the numbers land.
+
+### 3. AVeriTeC parametric-only baseline for contamination
+
+The contamination control runs the same AVeriTeC dev claims through a no-retrieval pure-LLM path (`runner_parametric.py`) and computes the delta against the AgentOracle-with-retrieval run. RESULTS.md will publish the delta as `agentoracle_score - parametric_score` per metric, with positive values indicating that grounded retrieval moved the score above what the bare LLM produces from its training-data memorization alone.
 
 ## How to reproduce when results land
 
