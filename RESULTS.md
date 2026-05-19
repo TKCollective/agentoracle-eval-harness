@@ -19,10 +19,11 @@ The original May 17 EOD PT target for first numbers slipped by ~5 days. We are p
 **What happens between now and 2026-05-22:**
 
 - AVeriTeC 2024 dev (500 claims) full run on agentoracle.co `/evaluate` with locked seed 42
-- FEVER 1.0 dev (19,998 claims) full run on the same endpoint, same seed
-- Parametric (no-retrieval) baseline runs for both datasets so the contamination delta lands alongside the headline numbers
+- AVeriTeC parametric (no-retrieval) baseline (500 claims) so the contamination delta lands alongside the headline numbers
 - `scripts/check_response_shape.py` fires immediately before each run with the observed `X-AgentOracle-API-Version` header captured
 - Both R@K variants (strict + domain-fallback) reported, along with `strict_minus_lenient` delta and `fallback_fires_pct`
+
+**FEVER 1.0 dev (19,998 claims) is deliberately deferred to a follow-up commit.** AVeriTeC is the harder, more recent, and more discriminating dataset for a retrieval-grounded fact-verification API. Shipping AVeriTeC clean on the new target date is more useful than rushing both. FEVER will land as a follow-up RESULTS.md commit when the full 20k-claim budget is appropriate — expected within 2-3 weeks of the AVeriTeC ship.
 
 **Calibration disclosures from the original 2026-05-14 ship still apply:**
 
