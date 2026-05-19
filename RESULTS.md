@@ -14,9 +14,11 @@ The original May 17 EOD PT target for first numbers slipped by ~5 days. We are p
 
 3. **Bazaar indexing diagnostic work** (x402-foundation/x402#2207, 4-merchant differential with Coinbase engineering). The fetch-tap / `extension-responses` capture work has been the load-bearing engineering task this week; the eval run is being scheduled around it, not the other way around.
 
-**New target:** First numbers land here by **2026-05-22 EOD PT**.
+**New target:** First numbers land here alongside the v0.2 receipt spec IETF Internet-Draft filing in **early June 2026**.
 
-**What happens between now and 2026-05-22:**
+Why paired with the IETF filing: the AVeriTeC numbers and the receipt spec are the same story — verification-as-an-agent-primitive with a published spec and a published benchmark. Shipping them together as one artifact is stronger than shipping each thinly. The IETF filing already requires concentrated end-of-May/early-June attention; the eval run will fire on the same operational cadence.
+
+**What happens between now and the IETF filing ship window:**
 
 - AVeriTeC 2024 dev (500 claims) full run on agentoracle.co `/evaluate` with locked seed 42
 - AVeriTeC parametric (no-retrieval) baseline (500 claims) so the contamination delta lands alongside the headline numbers
