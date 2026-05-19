@@ -1,7 +1,39 @@
 # Results
 
-> **Status (May 14, 2026): Code public, results pending full run.**
->
+> **Status (May 19, 2026): Numbers slipped from May 17 → May 22. Full run firing this week. Honest disclosure of the slip and why is below.**
+
+## Update — May 19, 2026 (slip notice)
+
+The original May 17 EOD PT target for first numbers slipped by ~5 days. We are publishing this update before the run, not after, so the reason for the slip is on the record alongside whatever the numbers end up being.
+
+**What caused the slip:**
+
+1. **Beenz peer review on 2026-05-15** produced three engineering fixes that needed to land before any results-publish run (commit [`2b6a208`](https://github.com/TKCollective/agentoracle-eval-harness/commit/2b6a208)): runner module-name corrections in `scripts/run_full_eval.sh`, strict-URL R@K alongside domain-fallback, and an API-shape pin (`scripts/check_response_shape.py`) so server-side response drift between ship date and results date couldn't silently move scores. The right thing to do was to land those fixes first — a results run that pre-dated the fixes would have been less defensible than waiting.
+
+2. **Prod outage on 2026-05-18 (~3.5 hours).** Perplexity API credits exhausted, returning HTTP 502 from `/research` and `/preview`. Resolved by refilling credits + enabling auto-reload. A full eval run during that window would have produced 502s on all claims that hit /research, contaminating the score. Postponing was the only honest call.
+
+3. **Bazaar indexing diagnostic work** (x402-foundation/x402#2207, 4-merchant differential with Coinbase engineering). The fetch-tap / `extension-responses` capture work has been the load-bearing engineering task this week; the eval run is being scheduled around it, not the other way around.
+
+**New target:** First numbers land here by **2026-05-22 EOD PT**.
+
+**What happens between now and 2026-05-22:**
+
+- AVeriTeC 2024 dev (500 claims) full run on agentoracle.co `/evaluate` with locked seed 42
+- FEVER 1.0 dev (19,998 claims) full run on the same endpoint, same seed
+- Parametric (no-retrieval) baseline runs for both datasets so the contamination delta lands alongside the headline numbers
+- `scripts/check_response_shape.py` fires immediately before each run with the observed `X-AgentOracle-API-Version` header captured
+- Both R@K variants (strict + domain-fallback) reported, along with `strict_minus_lenient` delta and `fallback_fires_pct`
+
+**Calibration disclosures from the original 2026-05-14 ship still apply:**
+
+- Recall@K reported in BOTH strict and domain-fallback variants
+- /evaluate response-shape pinned before each run
+- AVeriTeC parametric-only contamination control
+
+Detailed disclosures in their own section below — unchanged from the 2026-05-14 ship.
+
+## Original 2026-05-14 publish (kept for the record)
+
 > The full FEVER 1.0 dev + AVeriTeC 2024 dev evaluation runs are scheduled
 > for May 15-17, 2026. First numbers will land here by **May 17, 2026 EOD PT**.
 
